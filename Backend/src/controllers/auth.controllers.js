@@ -1,7 +1,9 @@
 const Model = require("../models/server.js");
+const userUtils = require("../utils/server.js");
 
 const registeruser = async (req, res) => {
-    const { username, email, password } =req.body;
+    try{
+        const { username, email, password } =req.body;
     if(!username || !email || !password) {
        return res.status(400).json({ message: "All fields are required"});
     }
@@ -16,13 +18,24 @@ const registeruser = async (req, res) => {
     if(user) {
         return res.status(400).json({ message: "User already existed"});
     }
+    const hashedPassword = await userUtils.hashingPassword(password);
+    console.log(hashedPassword);
+
 
     const newuser = await Model.User.create({
         email,
         username,
-        password
+        password: hashedPassword
     });
-    return res.status(201).json({ message: "User created successfully", newuser });
+
+    const token = await userUtils.createToken(newuser._id);
+   
+    console.log(hashedPassword, token);
+    // return res.status(201).json({ message: "User created successfully", newuser:{ _id:newuser._id, email:email, username:username}});
+
+    } catch(error) {
+        console.error(error);
+    }
 }
 
 const loginuser = async (req, res) => {
