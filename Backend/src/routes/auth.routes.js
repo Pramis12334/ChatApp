@@ -5,7 +5,7 @@ const route = express.Router();
 
 route.post('/register',Controllers.registeruser);
 
-route.get('/login', Controllers.loginuser);
+route.post('/login', Controllers.loginuser);
 
 route.get('/logout',Controllers.logoutuser);
 

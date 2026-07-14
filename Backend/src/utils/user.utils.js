@@ -6,10 +6,18 @@ const jwt = require('jsonwebtoken');
    return hashedPassword;
 }
 
-async function createToken(userId) {
-    const token = await jwt.sign(userId, process.env.JWT_SECRET);
-    return token;
+const generateToken = async (userId, res) => {
+    const token = await jwt.sign({userId: userId}, process.env.JWT_SECRET);
+    res.cookie("token", token);
 }
 
-module.exports = { hashingPassword, createToken }
+const comparePassword = async (Password,DbPassword,res) => {
+    const verified = await bcrypt.compare(Password,DbPassword);
+    if(!verified) {
+    res.status(400).json({message: "Your credentials doesnt match " });
+    }
+    res.status(200).json({ message: "You have logged in successfully" });
+}
+
+module.exports = { hashingPassword, generateToken, comparePassword }
 

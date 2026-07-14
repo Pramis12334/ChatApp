@@ -1,3 +1,3 @@
-const { hashingPassword, createToken } = require("./user.utils");
+const { hashingPassword, generateToken, comparePassword } = require("./user.utils");
 
-module.exports = { hashingPassword, createToken }
+module.exports = { hashingPassword, generateToken, comparePassword }

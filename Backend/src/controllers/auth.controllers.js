@@ -19,19 +19,17 @@ const registeruser = async (req, res) => {
         return res.status(400).json({ message: "User already existed"});
     }
     const hashedPassword = await userUtils.hashingPassword(password);
-    console.log(hashedPassword);
-
 
     const newuser = await Model.User.create({
         email,
         username,
         password: hashedPassword
     });
+    await newuser.save();
 
-    const token = await userUtils.createToken(newuser._id);
+    userUtils.generateToken(newuser._id, res);
    
-    console.log(hashedPassword, token);
-    // return res.status(201).json({ message: "User created successfully", newuser:{ _id:newuser._id, email:email, username:username}});
+    return res.status(201).json({ message: "User created successfully", newuser:{ _id:newuser._id, email:newuser.email, username:newuser.username, profilepic: newuser.profilepic}});
 
     } catch(error) {
         console.error(error);
@@ -40,12 +38,28 @@ const registeruser = async (req, res) => {
 
 const loginuser = async (req, res) => {
     
-    const { username, email, password } =req.body;
-    return res.send("this is login page");
+   try{ 
+    const { email, password } =req.body;
+    if(!email || ! password ) {
+        return res.status(400).json({message: "Both of the fields is required" });
+    }
+    const newuser = await Model.User.findOne({ email }).select("+password");
+    console.log(newuser);
+    
+    if(!newuser) {
+        res.status(400).json({ message: "User doesnt existed" });
+    }
+    userUtils.comparePassword(password, newuser.password, res);
+    userUtils.generateToken(newuser._id, res);
+
+   } catch(error) {
+    return res.status(500).json({ message: "Error occur", error});
+   }
 }
 
 const logoutuser = async (req, res) => {
-    return res.send("this is logout page");
+    res.cookie("token", "");
+    res.status(200).json({message: "Logged out successfully" });
 }
 
 module.exports = {
