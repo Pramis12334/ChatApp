@@ -1,4 +1,5 @@
 const Model = require("../models/server.js");
+const { sendSingupEmail } = require("../services/email.services.js");
 const userUtils = require("../utils/server.js");
 
 const registeruser = async (req, res) => {
@@ -28,6 +29,14 @@ const registeruser = async (req, res) => {
     await newuser.save();
 
     userUtils.generateToken(newuser._id, res);
+
+    try {
+        await sendSingupEmail(newuser.email, newuser.username, process.env.CLIENTURL );
+    } catch(error) {
+        console.error("Error occur while sending Email", error);
+    };
+
+    
    
     return res.status(201).json({ message: "User created successfully", newuser:{ _id:newuser._id, email:newuser.email, username:newuser.username, profilepic: newuser.profilepic}});
 
