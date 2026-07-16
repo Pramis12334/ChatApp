@@ -53,7 +53,10 @@ async function sendSingupEmail(userEmail, username, clientURL) {
     await sendEmail(userEmail, subject, text, html);
 }
 
+async function sendLoginEmail(userEmail, username, ){
+
+}
 module.exports = { 
     sendSingupEmail,
-
+    sendLoginEmail
 }

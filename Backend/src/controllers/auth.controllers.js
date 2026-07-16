@@ -53,7 +53,6 @@ const loginuser = async (req, res) => {
         return res.status(400).json({message: "Both of the fields is required" });
     }
     const newuser = await Model.User.findOne({ email }).select("+password");
-    console.log(newuser);
     
     if(!newuser) {
         res.status(400).json({ message: "User doesnt existed" });
@@ -64,6 +63,7 @@ const loginuser = async (req, res) => {
    } catch(error) {
     return res.status(500).json({ message: "Error occur", error});
    }
+
 }
 
 const logoutuser = async (req, res) => {
@@ -71,8 +71,13 @@ const logoutuser = async (req, res) => {
     res.status(200).json({message: "Logged out successfully" });
 }
 
+const updateProfile = async( req, res) => {
+    const user = req.user;
+}
+
 module.exports = {
 registeruser,
 loginuser,
-logoutuser
+logoutuser,
+updateProfile
 }
