@@ -25,6 +25,8 @@ return res.status(500).json({ message: "Middlewares Error", error });
 
 }
 
+
+
 module.exports = {
     AuthProtectRoute
 }
