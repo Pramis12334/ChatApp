@@ -1,6 +1,6 @@
 const express = require('express');
 const route = require('./routes/server');
-const { connectDB } = require('./lib/db');
+const { connectDB } = require('./db/db');
 const cookieParser = require('cookie-parser');
 
 const app = express();

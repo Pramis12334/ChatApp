@@ -1,4 +1,5 @@
 const Model = require("../models/server.js");
+const cloudinary  = require("../services/cloudinary.js");
 const { sendSingupEmail } = require("../services/email.services.js");
 const userUtils = require("../utils/server.js");
 
@@ -66,13 +67,28 @@ const loginuser = async (req, res) => {
 
 }
 
-const logoutuser = async (req, res) => {
+const logoutuser = async (_, res) => {
     res.cookie("token", "");
     res.status(200).json({message: "Logged out successfully" });
 }
 
 const updateProfile = async( req, res) => {
-    const user = req.user;
+   try {
+     const userId = req.user._id;
+     const profilepic = req.file;
+     console.log(profilepic);
+     
+     if(!profilepic) {
+        return res.status(401).json({ message: "Profilepic is required:" });
+     }
+     const updatedUser = await Model.User.findByIdAndUpdate(userId,{profilepic: profilepic.path},{new: true});
+     if(!updatedUser) {
+        return res.status(400).json({ message: "Some error occur while updating"});
+     }
+    return res.status(200).json({ message: "User updated successfully" }, updatedUser);
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error", error});
+    }
 }
 
 module.exports = {
