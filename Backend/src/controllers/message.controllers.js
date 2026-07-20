@@ -3,9 +3,15 @@ const getAllMessage = async (req, res) => {
    try {
     const userId = req.user._id;
     
-    const AllMessage = await Model.Message.find({ senderId: userId });
+    const AllMessage = await Model.Message.find({ 
+        $or: [{senderId:userId}, {receiverId: userId}],
+     });
 
-    return res.status(200).json(AllMessage);
+     const chatPartnerId =  [ ...new Set(AllMessage.map((msg) => 
+        msg.senderId.toString() === userId.toString() ? msg.receiverId.toString() : msg.senderId.toString()
+     ))];
+
+    return res.status(200).json(chatPartnerId);
    } catch(error) {
     console.log("Error in getAllMessage", error,message);
     return res.status(500).json({ message: "Server Error" })
