@@ -11,7 +11,9 @@ const getAllMessage = async (req, res) => {
         msg.senderId.toString() === userId.toString() ? msg.receiverId.toString() : msg.senderId.toString()
      ))];
 
-    return res.status(200).json(chatPartnerId);
+     const chatPartner = await Model.User.find({ _id: {$in: chatPartnerId}})
+
+    return res.status(200).json(chatPartner);
    } catch(error) {
     console.log("Error in getAllMessage", error,message);
     return res.status(500).json({ message: "Server Error" })
@@ -52,7 +54,19 @@ try{
     const image = req.file;
     const senderId = req.user._id;
     const { id: receiverId } = req.params;
- 
+
+    if(!text && !image) {
+        return res.status(400).json({ message: "Text or image is required"});
+    }
+
+    if(senderId.equals(receiverId)) {
+        res.status(400).json({message: "Cannot send message to yourself"});
+    }
+    const receiverexist = await Model.User.exists({_id: receiverId});
+    if(!receiverexist) {
+        res.status(400).json({message: "Receiver not found"});
+    }
+
     const newmsg = new Model.Message({
         senderId,
         receiverId,
