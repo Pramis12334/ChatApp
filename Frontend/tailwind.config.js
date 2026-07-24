@@ -12,7 +12,7 @@ export default {
                 'border': 'border 4s linear infinite',
             },
             keyframes: {
-                'border': {
+                border: {
                     to: { '--border-angle': '360deg' },
                 }
             }                      
