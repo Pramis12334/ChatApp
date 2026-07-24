@@ -13,8 +13,8 @@ const registeruser = async (req, res) => {
     if(!emailRegex.test(email)) {
        return res.status(400).json({ message: "Email must be valid"});
     }
-    if(password.length < 6 && password.length>30){
-        return res.status(400).json({ message: "Password must be greater than 6 and less than 30 characters"});
+    if(password.length < 6){
+        return res.status(400).json({ message: "Password must be greater than 6"});
     }
     const user = await Model.User.findOne({ email });
     if(user) {
@@ -28,21 +28,20 @@ const registeruser = async (req, res) => {
         password: hashedPassword
     });
     await newuser.save();
-
     userUtils.generateToken(newuser._id, res);
 
     try {
         await sendSingupEmail(newuser.email, newuser.username, process.env.CLIENTURL );
     } catch(error) {
         console.error("Error occur while sending Email", error);
+        res.status(500).json({message: "Email Service error"});
     };
 
-    
-   
     return res.status(201).json({ message: "User created successfully", newuser:{ _id:newuser._id, email:newuser.email, username:newuser.username, profilepic: newuser.profilepic}});
 
     } catch(error) {
-        console.error(error);
+        console.error("Error while creating user",error);
+        res.status(500).json({ message: "Internal Server Error in Registeruser Components"});
     }
 }
 

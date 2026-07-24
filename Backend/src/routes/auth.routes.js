@@ -13,4 +13,6 @@ route.get('/logout',Controllers.logoutuser);
 
 route.put('/update-profile', AuthProtectRoute,upload.single('profilepic'), Controllers.updateProfile);
 
+route.get("/check", AuthProtectRoute, (req, res) => res.status(200).json(req.user));
+
 module.exports = route;
