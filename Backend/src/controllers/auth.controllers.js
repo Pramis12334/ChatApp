@@ -61,14 +61,19 @@ const loginuser = async (req, res) => {
     userUtils.generateToken(newuser._id, res);
 
    } catch(error) {
-    return res.status(500).json({ message: "Error occur", error});
+    return res.status(500).json({ message: "Error occur while logging in", error});
    }
 
 }
 
 const logoutuser = async (_, res) => {
-    res.cookie("token", "");
-    res.status(200).json({message: "Logged out successfully" });
+    try{ 
+         res.cookie("token", "");
+         res.status(200).json({message: "Logged out successfully" });
+    } catch(error) {
+        console.error("Error while Logging out", error.message);
+    }
+   
 }
 
 const updateProfile = async( req, res) => {
