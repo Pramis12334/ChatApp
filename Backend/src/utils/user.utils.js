@@ -11,12 +11,9 @@ const generateToken = async (userId, res) => {
     res.cookie("token", token);
 }
 
-const comparePassword = async (Password,DbPassword,res) => {
+const comparePassword = async (Password,DbPassword) => {
     const verified = await bcrypt.compare(Password,DbPassword);
-    if(!verified) {
-    res.status(400).json({message: "Your credentials doesnt match " });
-    }
-    res.status(200).json({ message: "You have logged in successfully" });
+    return verified;
 }
 
 module.exports = { hashingPassword, generateToken, comparePassword }

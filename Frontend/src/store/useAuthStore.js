@@ -58,4 +58,16 @@ export const useAuthStore = create((set)=>({
         toast.error("Couldn`t logout");
       }
     },
+    
+    updateProfile: async (data) => {
+     try {
+      const res = await axiosInstance.put("/auth/update-profile", data, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      set({authUser: res.data});
+      toast.success("Profile updated successfully");
+     } catch(error) {
+      toast.error("Couldnt upload pfp");
+     }
+    },
 }))
