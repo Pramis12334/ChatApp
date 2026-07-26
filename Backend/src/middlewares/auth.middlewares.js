@@ -5,17 +5,17 @@ const AuthProtectRoute = async (req, res, next) => {
 try{
     const token = req.cookies.token;
 if(!token) {
-    return res.status(401).json({ message: "Unauthorized - no token found"});
+    return res.status(404).json({ message: "Unauthorized - no token found"});
 }
 const decoded = await jwt.verify(token, process.env.JWT_SECRET);
 
 if(!decoded) {
-    return res.status(401).json({ message: "Unauthorized - invalid user" });
+    return res.status(403).json({ message: "Unauthorized - invalid token" });
 }
 
 const user = await Model.User.findById(decoded.userId);
 if(!user) {
-    return res.status(401).json({ message: "Unauthorized- user doesnt existed" });
+    return res.status(402).json({ message: "Unauthorized- user doesnt existed" });
 }
 req.user = user;
 next();

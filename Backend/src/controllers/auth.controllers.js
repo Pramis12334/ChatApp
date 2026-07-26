@@ -37,7 +37,7 @@ const registeruser = async (req, res) => {
         res.status(500).json({message: "Email Service error"});
     };
 
-    return res.status(201).json({ message: "User created successfully", newuser:{ _id:newuser._id, email:newuser.email, username:newuser.username, profilepic: newuser.profilepic}});
+    return res.status(201).json({ message: "User created successfully", _id:newuser._id, email:newuser.email, username:newuser.username, profilepic: newuser.profilepic});
 
     } catch(error) {
         console.error("Error while creating user",error);
@@ -55,10 +55,17 @@ const loginuser = async (req, res) => {
     const newuser = await Model.User.findOne({ email }).select("+password");
     
     if(!newuser) {
-        res.status(400).json({ message: "User doesnt existed" });
+        return res.status(400).json({ message: "User doesnt existed" });
     }
-    userUtils.comparePassword(password, newuser.password, res);
+
+    const isPasswordCorrect = await userUtils.comparePassword(password, newuser.password);
+    if(!isPasswordCorrect) {
+        return res.status(400).json({ message: "Your credentials doesnt match" });
+    }
+
     userUtils.generateToken(newuser._id, res);
+
+    return res.status(200).json({ message: "You have logged in successfully", _id: newuser._id, email: newuser.email, username: newuser.username, profilepic: newuser.profilepic });
 
    } catch(error) {
     return res.status(500).json({ message: "Error occur while logging in", error});
@@ -83,13 +90,13 @@ const updateProfile = async( req, res) => {
      console.log(profilepic);
      
      if(!profilepic) {
-        return res.status(401).json({ message: "Profilepic is required:" });
+        return res.status(406).json({ message: "Profilepic is required:" });
      }
      const updatedUser = await Model.User.findByIdAndUpdate(userId,{profilepic: profilepic.path},{new: true});
      if(!updatedUser) {
         return res.status(400).json({ message: "Some error occur while updating"});
      }
-    return res.status(200).json({ message: "User updated successfully" }, updatedUser);
+    return res.status(200).json({ message: "User updated successfully", profilepic: updatedUser.profilepic, username: updatedUser.username, _id: updatedUser._id, email: updatedUser.email });
     } catch (error) {
         return res.status(500).json({ message: "Internal Server Error", error});
     }
