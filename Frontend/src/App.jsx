@@ -13,6 +13,8 @@ function App() {
   useEffect(()=> {
     CheckAuth()
   },[CheckAuth])
+  console.log(authUser);
+  
   
   if(isCheckAuth) return <PageLoading />;
   
