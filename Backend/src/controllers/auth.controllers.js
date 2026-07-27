@@ -28,7 +28,7 @@ const registeruser = async (req, res) => {
         password: hashedPassword
     });
     await newuser.save();
-    userUtils.generateToken(newuser._id, res);
+    await userUtils.generateToken(newuser._id, res);
 
     try {
         await sendSingupEmail(newuser.email, newuser.username, process.env.CLIENTURL );
@@ -63,7 +63,7 @@ const loginuser = async (req, res) => {
         return res.status(400).json({ message: "Your credentials doesnt match" });
     }
 
-    userUtils.generateToken(newuser._id, res);
+    await userUtils.generateToken(newuser._id, res);
 
     return res.status(200).json({ message: "You have logged in successfully", _id: newuser._id, email: newuser.email, username: newuser.username, profilepic: newuser.profilepic });
 

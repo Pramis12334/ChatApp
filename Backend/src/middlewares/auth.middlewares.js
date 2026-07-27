@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const AuthProtectRoute = async (req, res, next) => {
 try{
     const token = req.cookies.token;
+    
 if(!token) {
     return res.status(404).json({ message: "Unauthorized - no token found"});
 }

@@ -8,14 +8,15 @@ export const useAuthStore = create((set)=>({
     isCheckAuth: true,
     isSigningUp: false,
     isLogginin: false,
+    isUpdatingProfileImage: false,
 
     CheckAuth: async () => {
       try{ 
         const res = await axiosInstance.get("/auth/check");
-        set({authUser: res.data})
-      }catch(error) {
-        console.error("Error in Checking AuthUser: ",error);
-        set({ authUser: null})
+        set({authUser: res.data});
+      } catch(error) {
+        console.error("Error in Checking AuthUser: ", error);
+        set({ authUser: null })
       } finally {
         set({isCheckAuth: false})
       }
@@ -60,6 +61,7 @@ export const useAuthStore = create((set)=>({
     },
     
     updateProfile: async (data) => {
+      set({isUpdatingProfileImage: true});
      try {
       const res = await axiosInstance.put("/auth/update-profile", data, {
         headers: { "Content-Type": "multipart/form-data" }
@@ -68,6 +70,8 @@ export const useAuthStore = create((set)=>({
       toast.success("Profile updated successfully");
      } catch(error) {
       toast.error("Couldnt upload pfp");
+     } finally {
+      set({ isUpdatingProfileImage: false})
      }
     },
 }))
