@@ -25,10 +25,10 @@ function ContactsList() {
             <div className='size-12 rounded-full'>
               <img 
             src={contact.profilepic || "/avatar.png"}
-             alt={contact.username} />
+             />
             </div>
-            <h4 className='text-slate-200 font-medium truncate'>{contact.username}</h4>
           </div>
+            <h4 className='text-slate-200 font-medium truncate'>{contact.username}</h4>
         </div>
       </div>
     ))}

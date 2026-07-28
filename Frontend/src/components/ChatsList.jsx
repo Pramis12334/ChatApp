@@ -22,14 +22,14 @@ function ChatsList() {
       onClick={() => setSelectedUser(chat)}
       >
         <div className='flex gap-3 items-center'>
-          <div className='avatar online'>
+          <div className={`avatar online`}>
             <div className='size-12 rounded-full'>
               <img 
             src={chat.profilepic || "/avatar.png"}
-             alt={chat.username} />
+             />
             </div>
-            <h4 className='text-slate-200 font-medium truncate'>{chat.username}</h4>
           </div>
+            <h4 className='text-slate-200 font-medium truncate'>{chat.username}</h4>
         </div>
       </div>
     ))}
