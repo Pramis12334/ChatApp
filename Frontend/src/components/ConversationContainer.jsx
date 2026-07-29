@@ -6,6 +6,7 @@ import UsersLoadingSkeleton from "../components/UsersLoadingSkeleton"
 import { useAuthStore } from '../store/useAuthStore';
 import ChatHeaders from './ChatHeaders';
 import NoMessageHistory from './NoMessageHistory';
+import MessagesLoadingSkeleton from './MessagesLoadingSkeleton';
 
 const ChatContainer = () => {
   const {isMessagesLoading, getConversationByUserId, messages, selectedUser} = useChatStore();
@@ -15,12 +16,11 @@ const ChatContainer = () => {
     getConversationByUserId(selectedUser._id);
   }, [selectedUser,getConversationByUserId]);
 
-  if(isMessagesLoading) return <UsersLoadingSkeleton />
   return (
    <>
    <ChatHeaders />
    <div className='px-6 flex-1 overflow-y-auto py-8'>
-    {messages.length > 0 ? (
+    {messages.length > 0 && !isMessagesLoading  ? (
      <div className='max-w-3xl mx-auto space-y-6'>
         {messages.map((msg) => (
           <div 
@@ -43,10 +43,13 @@ const ChatContainer = () => {
           </div>
         ))}
      </div>
+    ) : isMessagesLoading ? (
+      <MessagesLoadingSkeleton />
     ) : (
       <NoMessageHistory name={selectedUser.username} />
     )} 
    </div>
+   <MessageInput />
    </>
   )
 }
