@@ -6,7 +6,7 @@ import ProfileHeader from '../components/ProfileHeader';
 import ActiveTabSwitch from '../components/ActiveTabSwitch';
 import ChatsList from '../components/ChatsList';
 import ContactsList from '../components/ContactsList';
-import ChatContainer from '../components/ConversationContainer';
+import ConversationContainer from '../components/ConversationContainer';
 import NoConversationPlaceHolder from '../components/NoConversationPlaceHolder';
 
 function ChatPage() {
@@ -22,13 +22,13 @@ function ChatPage() {
           <ActiveTabSwitch />
 
           <div className='flex-1 overflow-y-auto p-4 space-y-2'>
-            {activeTab === "chats" ? <ChatsList/> : <ContactsList />}
+            {activeTab === "chats" ? <ChatsList /> : <ContactsList />}
           </div>
         </div>
 
         {/* for right side */}
         <div className='flex-1 flex flex-col bg-slate-900/50 backdrop-blur-sm '> 
-        {selectedUser ? <ChatContainer /> : <NoConversationPlaceHolder />}
+        {selectedUser ? <ConversationContainer /> : <NoConversationPlaceHolder />}
         </div>
       </BorderAnimatedContainer>
     </div>
