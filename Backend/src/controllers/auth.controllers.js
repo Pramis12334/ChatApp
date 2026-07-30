@@ -87,8 +87,6 @@ const updateProfile = async( req, res) => {
    try {
      const userId = req.user._id;
      const profilepic = req.file;
-     console.log(profilepic);
-     
      if(!profilepic) {
         return res.status(406).json({ message: "Profilepic is required:" });
      }

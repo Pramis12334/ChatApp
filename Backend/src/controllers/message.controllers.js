@@ -15,7 +15,7 @@ const getAllMessage = async (req, res) => {
 
     return res.status(200).json(chatPartner);
    } catch(error) {
-    console.log("Error in getAllMessage", error,message);
+    console.log("Error in getAllMessage", error.message);
     return res.status(500).json({ message: "Server Error" })
    }
 }
@@ -26,7 +26,7 @@ const getAllContacts = async(req, res) => {
 
     return res.status(200).json(filteredUser);
    } catch(error) {
-    console.log("Error in getAllContacts", error,message);
+    console.log("Error in getAllContacts", error.message);
     return res.status(500).json({ message: "Server Error" })
    }
 }
@@ -60,20 +60,21 @@ try{
     }
 
     if(senderId.equals(receiverId)) {
-        res.status(400).json({message: "Cannot send message to yourself"});
+        return res.status(400).json({message: "Cannot send message to yourself"});
     }
     const receiverexist = await Model.User.exists({_id: receiverId});
     if(!receiverexist) {
-        res.status(400).json({message: "Receiver not found"});
+        return res.status(400).json({message: "Receiver not found"});
     }
 
     const newmsg = new Model.Message({
         senderId,
         receiverId,
-        text,
-        image: image.path
+        text: text,
+        image: image ? image.path : undefined
     });
     await newmsg.save();
+    console.log(newmsg);
     return res.status(201).json(newmsg);
 
 } catch(error) {

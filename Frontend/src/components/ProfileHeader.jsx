@@ -19,7 +19,6 @@ function ProfileHeader() {
 
     const formData = new FormData();
     formData.append("profilepic", file);
-
     setSelectedImg(URL.createObjectURL(file));
     await updateProfile(formData);
   }
