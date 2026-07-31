@@ -1,8 +1,11 @@
 require('dotenv').config();
-const app = require('./src/server');
+const { server } = require('./src/lib/socket.io');
+const app = require('./src/server.js');
+const { connectDB }  = require('./src/db/db.js');
 
+connectDB();
 
-app.listen(3000, () => {
+server.listen(3000, () => {
 console.log("Server is running on port 3000");
 });
 

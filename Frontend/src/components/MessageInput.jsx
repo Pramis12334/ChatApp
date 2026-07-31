@@ -42,6 +42,7 @@ function MessageInput() {
         setImagePreview(URL.createObjectURL(file));
     }
     const removeImage = () => {
+        setImageFile(null);
         setImagePreview(null);
         if(fileInputRef.current) fileInputRef.current.value = "";
     }

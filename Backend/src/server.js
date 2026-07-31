@@ -1,12 +1,9 @@
 const express = require('express');
 const route = require('./routes/server');
-const { connectDB } = require('./db/db');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const { app } = require('./lib/socket.io.js');
 
-const app = express();
-
-connectDB();
 
 app.use(express.json());
 app.use(cors({origin:process.env.CLIENT_URL, credentials: true}));
