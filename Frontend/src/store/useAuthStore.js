@@ -82,17 +82,39 @@ export const useAuthStore = create((set, get)=>({
      }
     },
     connectSocket: () => {
-      const authUser = get();
-      if(!authUser || get().socket?.connected)  return;
-      const socket = io("http://localhost:3000",{
-        withCredentials: true });
-      socket.connect()
-      set({socket: socket});
-      socket.on("getOnlineUsers",(userIds) => {
-        set({ onlineUsers: userIds});
+      const authUser = get().authUser;
+      const existingSocket = get().socket;
+
+      if(!authUser || existingSocket?.connected) return;
+
+      const getSocketToken = () => {
+        if (typeof document === "undefined") return null;
+        const tokenCookie = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("token="));
+
+        return tokenCookie ? tokenCookie.split("=")[1] : null;
+      };
+
+      const socket = io("http://localhost:3000", {
+        withCredentials: true,
+        auth: {
+          token: getSocketToken(),
+        },
       });
+
+      socket.on("connect_error", (error) => {
+        console.error("Socket connection error:", error.message);
+      });
+
+      socket.on("getOnlineUsers", (userIds) => {
+        set({ onlineUsers: userIds });
+      });
+
+      socket.connect();
+      set({ socket });
     },
     disconnectSocket: () => {
-     if(get().socket?.connect) get().socket.disconnect();
+      if (get().socket?.disconnect) get().socket.disconnect();
     },
 }))
