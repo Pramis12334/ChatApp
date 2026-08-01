@@ -1,4 +1,6 @@
+const { getReceiverSocketId, io } = require('../lib/socket.io.js');
 const Model = require('../models/server.js');
+
 const getAllMessage = async (req, res) => {
    try {
     const userId = req.user._id;
@@ -74,6 +76,11 @@ try{
         image: image ? image.path : undefined
     });
     await newmsg.save();
+
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+        io.to(receiverSocketId).emit("newMessage", newmsg);
+    }
     console.log(newmsg);
     return res.status(201).json(newmsg);
 
