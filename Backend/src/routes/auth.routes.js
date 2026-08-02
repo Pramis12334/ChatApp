@@ -19,4 +19,6 @@ route.post("/forgot-password",Controllers.userPasswordForgot);
 
 route.post("/reset-password/:resetLink", Controllers.userPasswordChange);
 
+route.post("/verify-account/:verificationToken", Controllers.userVerification);
+
 module.exports = route;
