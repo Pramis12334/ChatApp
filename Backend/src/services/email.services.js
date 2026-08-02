@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const { createWelcomeEmailTemplate } = require('./email.template');
+const { createWelcomeEmailTemplate, createResetPasswordEmailTemplate } = require('./email.template');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -56,7 +56,28 @@ async function sendSingupEmail(userEmail, username, clientURL) {
 async function sendLoginEmail(userEmail, username, ){
 
 }
+
+async function sendResetPasswordEmail(userEmail, username, resetLink) {
+  const subject = 'Password Reset';
+  const text = `Use this link to reset your password. The link is only valid for an hour.
+
+************
+Hi {{username}},
+************
+
+You recently requested to reset your password for your account. Use the button below to reset it. This password reset is only valid for the next an hour.
+
+Reset your password ( {{ resetLink }} )
+
+For security, If you did not request a password reset, please ignore this email.
+
+Thanks,
+The ChatApp team`;
+  const html = `${createResetPasswordEmailTemplate(username, resetLink)}`;
+  await sendEmail(userEmail,subject,text,html);
+}
 module.exports = { 
     sendSingupEmail,
-    sendLoginEmail
+    sendLoginEmail,
+    sendResetPasswordEmail
 }

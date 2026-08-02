@@ -1,11 +1,13 @@
+
 const Model = require("../models/server.js");
 const cloudinary  = require("../services/cloudinary.js");
-const { sendSingupEmail } = require("../services/email.services.js");
+const { sendSingupEmail, sendResetPasswordEmail } = require("../services/email.services.js");
 const userUtils = require("../utils/server.js");
+const crypto = require('crypto');
 
 const registeruser = async (req, res) => {
     try{
-        const { username, email, password } =req.body;
+        const { username, email, password, isVerified, VerificationToken, resetPasswordToken, resetPasswordTokenExpired } =req.body;
     if(!username || !email || !password) {
        return res.status(400).json({ message: "All fields are required"});
     }
@@ -25,7 +27,11 @@ const registeruser = async (req, res) => {
     const newuser = await Model.User.create({
         email,
         username,
-        password: hashedPassword
+        password: hashedPassword,
+        isVerified,
+        VerificationToken,
+        resetPasswordToken,
+        resetPasswordTokenExpired
     });
     await newuser.save();
     await userUtils.generateToken(newuser._id, res);
@@ -100,9 +106,73 @@ const updateProfile = async( req, res) => {
     }
 }
 
+const userPasswordForgot = async (req, res) => {
+    try{
+        const { email } = req.body;
+
+    const user = await Model.User.findOne({email});
+    if(!user) {
+        return res.status(404).json({ message: "Invalid Email"});
+    }
+    
+    const resetToken = await crypto.randomBytes(32).toString('hex');
+    
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordTokenExpired = Date.now() + 3600000;
+
+    await user.save();
+    
+    const resetLink = `${process.env.CLIENT_URL}/reset-password/${user.resetPasswordToken}`;
+
+    try{
+        await sendResetPasswordEmail(email,user.username,resetLink);
+    } catch(error) {
+        console.log("Email server Error");
+        return res.status(500).json({ message: "Email server Error", error});
+    }
+    return res.status(200).json({ message: "Password reset link sent successfully"});
+    } catch(error) {
+        console.log("UserForgotPassword Controllers Error");
+        res.status(500).json({ message: "Internal Server Error"})
+    }
+}
+
+const userPasswordChange = async (req, res) => {
+ try{
+    const {resetLink} = req.params;
+    const {password} = req.body;
+
+    if(!resetLink || !password) {
+        return res.status(404).json("Invalid typo");
+    }
+
+    const user = await Model.User.findOne({
+        resetPasswordToken: resetLink,
+        resetPasswordTokenExpired: {$gt: Date.now()}
+    });
+
+    if(!user) {
+        return res.status(404).json({ message: "Invalid or expired token"});
+    }
+
+    user.password = await userUtils.hashingPassword(password);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordTokenExpired = undefined;
+
+    await user.save();
+
+    res.status(200).json({ message: "Password changed successfully"});
+
+ } catch(error) {
+    console.log("Error while changing User Password");
+    return res.status(500).json({ message: "Internal Server Error"});
+ }
+}
 module.exports = {
 registeruser,
 loginuser,
 logoutuser,
-updateProfile
+updateProfile,
+userPasswordForgot,
+userPasswordChange,
 }

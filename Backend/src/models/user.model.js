@@ -20,7 +20,16 @@ const UserSchema = mongoose.Schema({
     profilepic: {
         type: String,
         default: ""
-    }
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    VerificationToken: {
+        type: String,
+    },
+    resetPasswordToken: String,
+    resetPasswordTokenExpired: Date,
 }, { timestamps: true });
 
 const User = mongoose.model("User",UserSchema);

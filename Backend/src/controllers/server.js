@@ -1,4 +1,4 @@
-const { registeruser, loginuser, logoutuser, updateProfile } = require("./auth.controllers");
+const { registeruser, loginuser, logoutuser, updateProfile, userPasswordForgot, userPasswordChange } = require("./auth.controllers");
 const { getAllMessage, getAllContacts, getMessageByUserId, sendMessage } = require("./message.controllers");
 
 module.exports = {
@@ -9,5 +9,7 @@ module.exports = {
     getAllMessage,
     getAllContacts,
     getMessageByUserId,
-    sendMessage
+    sendMessage,
+    userPasswordForgot,
+    userPasswordChange
 }
