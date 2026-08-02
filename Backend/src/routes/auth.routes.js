@@ -15,4 +15,8 @@ route.put('/update-profile', AuthProtectRoute,upload.single('profilepic'), Contr
 
 route.get("/check", AuthProtectRoute, (req, res) => res.status(200).json(req.user));
 
+route.post("/forgot-password",Controllers.userPasswordForgot);
+
+route.post("/reset-password/:resetLink", Controllers.userPasswordChange);
+
 module.exports = route;
