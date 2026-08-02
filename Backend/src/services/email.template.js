@@ -544,7 +544,13 @@ function createResetPasswordEmailTemplate(username, resetLink) {
  `
 }
 
+function createVerificationEmailTemplate(username, verificationLink) {
+  return `<p>Please verify your account by clicking the link: 
+  <a href="${verificationLink}">${verificationLink}</a> </p>`
+}
+
 module.exports = {
     createWelcomeEmailTemplate,
-    createResetPasswordEmailTemplate
+    createResetPasswordEmailTemplate,
+    createVerificationEmailTemplate
 }

@@ -1,7 +1,7 @@
 
 const Model = require("../models/server.js");
 const cloudinary  = require("../services/cloudinary.js");
-const { sendSingupEmail, sendResetPasswordEmail } = require("../services/email.services.js");
+const { sendSingupEmail, sendResetPasswordEmail, sendVerificationEmail } = require("../services/email.services.js");
 const userUtils = require("../utils/server.js");
 const crypto = require('crypto');
 
@@ -24,12 +24,15 @@ const registeruser = async (req, res) => {
     }
     const hashedPassword = await userUtils.hashingPassword(password);
 
+    const verificationToken = await crypto.randomBytes(32).toString('hex');
+    
+
     const newuser = await Model.User.create({
         email,
         username,
         password: hashedPassword,
         isVerified,
-        VerificationToken,
+        VerificationToken: verificationToken,
         resetPasswordToken,
         resetPasswordTokenExpired
     });
@@ -37,17 +40,27 @@ const registeruser = async (req, res) => {
     await userUtils.generateToken(newuser._id, res);
 
     try {
-        await sendSingupEmail(newuser.email, newuser.username, process.env.CLIENTURL );
+        await sendSingupEmail(newuser.email, newuser.username, process.env.CLIENT_URL );
     } catch(error) {
         console.error("Error occur while sending Email", error);
-        res.status(500).json({message: "Email Service error"});
+        return res.status(500).json({message: "Email Service error"});
+    };
+
+    const verificationLink = `${process.env.CLIENT_URL}/verify-account/${verificationToken}`;
+    
+
+    try {
+    await sendVerificationEmail(verificationLink, email, newuser.username);
+    } catch(error) {
+        console.error("Error occur while sending Email", error);
+        return res.status(500).json({message: "Email Service error"});
     };
 
     return res.status(201).json({ message: "User created successfully", _id:newuser._id, email:newuser.email, username:newuser.username, profilepic: newuser.profilepic});
 
     } catch(error) {
         console.error("Error while creating user",error);
-        res.status(500).json({ message: "Internal Server Error in Registeruser Components"});
+        return res.status(500).json({ message: "Internal Server Error in Registeruser Components"});
     }
 }
 
@@ -168,6 +181,32 @@ const userPasswordChange = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error"});
  }
 }
+
+const userVerification = async(req, res) => {
+   try {
+     const {verificationToken} = req.params;
+     
+    if(!verificationToken) {
+        return res.status(400).json({message: "Provide Token"});
+    }
+    const user = await Model.User.findOne({
+        VerificationToken: verificationToken
+    });
+    
+    if(!user || user.isVerified) {
+        return res.status(404).json({message: user.isVerified ? "User already verified" : "Invalid VerificationToken" });
+    }
+    
+    user.isVerified = true;
+    await user.save();
+    console.log(user);
+    
+    return res.status(200).json({ message: "User verified successfully"});
+   } catch (error) {
+    console.log("Verification controller error");
+    return res.status(500).json({ message: "Internal Server Error"});
+   }
+}
 module.exports = {
 registeruser,
 loginuser,
@@ -175,4 +214,5 @@ logoutuser,
 updateProfile,
 userPasswordForgot,
 userPasswordChange,
+userVerification
 }
