@@ -31,6 +31,7 @@ const registeruser = async (req, res) => {
         email,
         username,
         password: hashedPassword,
+        lastLogin: Date.now(),
         isVerified,
         VerificationToken: verificationToken,
         resetPasswordToken,
@@ -81,6 +82,10 @@ const loginuser = async (req, res) => {
     if(!isPasswordCorrect) {
         return res.status(400).json({ message: "Your credentials doesnt match" });
     }
+
+    newuser.lastLogin = Date.now()
+
+    await user.save();
 
     await userUtils.generateToken(newuser._id, res);
 
@@ -187,7 +192,7 @@ const userVerification = async(req, res) => {
      const {verificationToken} = req.params;
      
     if(!verificationToken) {
-        return res.status(400).json({message: "Provide Token"});
+        return res.status(400).json({message: "Provide Verification Token"});
     }
     const user = await Model.User.findOne({
         VerificationToken: verificationToken
@@ -196,11 +201,9 @@ const userVerification = async(req, res) => {
     if(!user || user.isVerified) {
         return res.status(404).json({message: user.isVerified ? "User already verified" : "Invalid VerificationToken" });
     }
-    
     user.isVerified = true;
     await user.save();
     console.log(user);
-    
     return res.status(200).json({ message: "User verified successfully"});
    } catch (error) {
     console.log("Verification controller error");

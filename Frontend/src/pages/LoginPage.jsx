@@ -73,6 +73,9 @@ function LoginPage() {
                       <Link to="/signup" className="auth-link">
                            Doesn`t have an account? Signup
                       </Link>
+                      <Link to="/forgot-password" className="auth-link">
+                          Forgot Password
+                      </Link>
                     </div>
                    </div>
                   </div>
