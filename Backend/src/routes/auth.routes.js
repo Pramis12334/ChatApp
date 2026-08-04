@@ -15,10 +15,10 @@ route.put('/update-profile', AuthProtectRoute,upload.single('profilepic'), Contr
 
 route.get("/check", AuthProtectRoute, (req, res) => res.status(200).json(req.user));
 
-route.post("/forgot-password",Controllers.userPasswordForgot);
+route.post("/forgot-password", Controllers.userPasswordForgot);
 
 route.post("/reset-password/:resetLink", Controllers.userPasswordChange);
 
-route.post("/verify-account/:verificationToken", Controllers.userVerification);
+route.post("/verify-account/:verificationToken",AuthProtectRoute, Controllers.userVerification);
 
 module.exports = route;
