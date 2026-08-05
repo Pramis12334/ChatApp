@@ -74,7 +74,7 @@ function SingupPage() {
                         </div>
                       </div>
                       {/* Password criteria */}
-                      <PasswordCriteria password={password}/>
+                      <PasswordCriteria password={formData.password}/>
                       {/* Submit button */}
                       <button className="auth-btn"  type="submit" disabled={isSigningUp} >
                         {isSigningUp ? (

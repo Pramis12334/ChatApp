@@ -69,12 +69,12 @@ function LoginPage() {
                       </button>
                     </form>
 
-                    <div className="mt-6 text-center">
+                    <div className="mt-6 text-center justify-between flex">
+                      <Link to="/forgot-password" className="auth-link">
+                          Forgot Password?
+                      </Link>
                       <Link to="/signup" className="auth-link">
                            Doesn`t have an account? Signup
-                      </Link>
-                      <Link to="/forgot-password" className="auth-link">
-                          Forgot Password
                       </Link>
                     </div>
                    </div>
