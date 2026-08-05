@@ -3,6 +3,7 @@ import { useAuthStore } from "../store/useAuthStore";
 import BorderAnimatedContainer from '../components/BorderAnimatedContainer'
 import { MessageCircleIcon, UserIcon, MailIcon, LockIcon, LoaderIcon } from "lucide-react";
 import { Link } from "react-router";
+import PasswordCriteria from "../components/PasswordCriteria";
 
 function SingupPage() {
   const [formData, setFormData ] = useState({username:"", email:"", password:""});
@@ -72,6 +73,8 @@ function SingupPage() {
 
                         </div>
                       </div>
+                      {/* Password criteria */}
+                      <PasswordCriteria password={password}/>
                       {/* Submit button */}
                       <button className="auth-btn"  type="submit" disabled={isSigningUp} >
                         {isSigningUp ? (
