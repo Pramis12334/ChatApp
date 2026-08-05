@@ -15,7 +15,7 @@ function MessageInput() {
     const { sendMessage, isSoundEnabled} = useChatStore();
 
     const handleSendMessages = async (e) => {
-        e.preventDefault() 
+        e.preventDefault();
         if(!text.trim() && !imageFile) return;
         if(isSoundEnabled) return playRandomKeyStrokeSound;
 
