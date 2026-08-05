@@ -67,10 +67,10 @@ const PasswordCriteria = ({password}) => {
                 className={`h-1 w-1/4 rounded-full transition-colors duration-300
                     ${index < strength ? getColor(strength) : "bg-gray-600"}
                     `}
-                
                 />
             ))}
         </div>
+        <PasswordCheck password={password}/>
     </div>
   )
 }
