@@ -28,6 +28,7 @@ function App() {
       < Route path="/" element={authUser ? <ChatPage /> : <Navigate to={"/login"} />} />
       < Route path="/signup" element={!authUser ? <SingupPage /> : <Navigate to={"/"} />} />
       < Route path="/login" element={!authUser ? <LoginPage /> : < Navigate  to={"/"} /> } />
+      < Route path="/forgot-password" element={ !authUser ? <ForgotPassword/>  : <Navigate to={"/"}/> }/>
     </Routes>
     <Toaster />
     </div>

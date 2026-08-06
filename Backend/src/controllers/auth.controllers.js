@@ -194,6 +194,7 @@ const userVerification = async(req, res) => {
     if(!verificationToken) {
         return res.status(400).json({message: "Provide Verification Token"});
     }
+    
     const user = await Model.User.findOne({
         VerificationToken: verificationToken
     });

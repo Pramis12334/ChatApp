@@ -9,6 +9,8 @@ export const useAuthStore = create((set, get)=>({
     isCheckAuth: true,
     isSigningUp: false,
     isLogginin: false,
+    isLoading: false,
+    error: null,
     isUpdatingProfileImage: false,
     socket: null,
     onlineUsers: [],
@@ -43,16 +45,16 @@ export const useAuthStore = create((set, get)=>({
     },
     
     login: async (data) => {
-      set({isLogginin: true})
+      set({isLogginin: true, error: null})
       try {
         const res = await axiosInstance.post("/auth/login", data);
-        set({ authUser: res.data});
+        set({ authUser: res.data, error: null });
         toast.success("Logged in Successfully");
-        get().connectSocket()
+        get().connectSocket();
       } catch(error) {
-        toast.error(error.response.data.message);
+        set({ error: error.response?.data?.message || "Error logging in" });
       } finally {
-        set({isLogginin: false});
+        set({ isLogginin: false });
       }
     },
 
@@ -66,7 +68,6 @@ export const useAuthStore = create((set, get)=>({
         toast.error("Couldn`t logout");
       }
     },
-    
     updateProfile: async (data) => {
       set({isUpdatingProfileImage: true});
      try {
@@ -117,4 +118,15 @@ export const useAuthStore = create((set, get)=>({
     disconnectSocket: () => {
       if (get().socket?.disconnect) get().socket.disconnect();
     },
+    forgotPassword : async(email) => {
+      set({ isLoading: true, error: null})
+      try{
+        const res = await axiosInstance.post("/auth/forgot-password", { email });
+        set({ authUser: res.data});
+      } catch (error) {
+        set({ error: error.response?.data?.message || "Error while changing password"});
+      } finally {
+        set({ isLoading: false});
+      }
+    }
 }))
