@@ -6,7 +6,7 @@ import { Link } from "react-router";
 
 function LoginPage() {
   const  [ formData , setFormData ] = useState({email: "", password: ""});
-  const {login, isLogginin} = useAuthStore();
+  const {login, isLogginin, error} = useAuthStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,7 +23,6 @@ function LoginPage() {
                       <h2 className="text-2xl font-bold text-slate-200 mb-2">Welcome Back</h2>
                       <p className="text-slate-500 font-bold">Login to access your account</p>
                     </div>
-
                     <form onSubmit={ handleSubmit } className="space-y-6">
                       {/* Email */}
                       <div>
@@ -59,6 +58,13 @@ function LoginPage() {
 
                         </div>
                       </div>
+                      {/* forgot password */}
+                      <div className='flex items-center mb-6'>
+                        <Link to='/forgot-password' className='text-sm text-cyan-400 hover:underline'>
+                          Forgot password?
+                        </Link>
+                      </div>
+                      { error && <p className='text-red-500 font-semibold mb-2'> {error} </p>}
                       {/* Submit button */}
                       <button className="auth-btn"  type="submit" disabled={isLogginin} >
                         {isLogginin ? (
@@ -68,11 +74,7 @@ function LoginPage() {
                         )}
                       </button>
                     </form>
-
-                    <div className="mt-6 text-center justify-between flex">
-                      <Link to="/forgot-password" className="auth-link">
-                          Forgot Password?
-                      </Link>
+                    <div className="mt-6 text-center flex">
                       <Link to="/signup" className="auth-link">
                            Doesn`t have an account? Signup
                       </Link>
@@ -96,7 +98,7 @@ function LoginPage() {
                   </div>
                 </div>
               </div>
-            </div>
+                   </div>
                 </div>
               </BorderAnimatedContainer>
             </div>
