@@ -124,7 +124,18 @@ export const useAuthStore = create((set, get)=>({
         const res = await axiosInstance.post("/auth/forgot-password", { email });
         set({ authUser: res.data});
       } catch (error) {
-        set({ error: error.response?.data?.message || "Error while changing password"});
+        set({ error: error.response?.data?.message || "Error while sending link"});
+      } finally {
+        set({ isLoading: false});
+      }
+    },
+    resetPassword: async(token, password) => {
+      set({ isLoading: true, error: null});
+      try {
+        const res = await axiosInstance.post(`/auth/reset-password/:${token}`,{password});
+        set({ authUser: res.data});
+      } catch (error) {
+        set({ error: error.response?.data?.message || "Error while changing password"})
       } finally {
         set({ isLoading: false});
       }
