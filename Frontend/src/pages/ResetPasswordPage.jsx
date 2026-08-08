@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { LockIcon } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router';
 import toast from 'react-hot-toast';
+
 
 const ResetPasswordPage = () => {
     const [newpassword, setNewPassword] = useState("");

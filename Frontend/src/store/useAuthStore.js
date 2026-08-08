@@ -139,5 +139,16 @@ export const useAuthStore = create((set, get)=>({
       } finally {
         set({ isLoading: false});
       }
+    },
+    verifyAccount: async(verificationToken) => {
+      set({ isLoading: true, error: null})
+      try {
+        const res = await axiosInstance.post(`/verify-account/:${verificationToken}`);
+        set({ authUser: res.data });
+      } catch (error) {
+        set({ error: error.response?.data?.message || "Error in Verificating Account"});
+      } finally {
+        set({ isLoading: false});
+      }
     }
 }))
