@@ -8,6 +8,7 @@ import PageLoading from './components/PageLoading'
 import { Toaster } from 'react-hot-toast'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPasswordPage from './pages/ResetPasswordPage'
+import EmailVerificationPage from './pages/EmailVerificationPage'
 
 function App() {
   const { authUser, isCheckAuth, CheckAuth } = useAuthStore();
@@ -31,6 +32,7 @@ function App() {
       < Route path="/login" element={!authUser ? <LoginPage /> : < Navigate  to={"/"} /> } />
       < Route path="/forgot-password" element={ !authUser ? <ForgotPassword/>  : <Navigate to={"/"}/> }/>
       < Route path='/reset-password/:token' element={ !authUser ? <ResetPasswordPage /> : <Navigate to={"/"}/>} />
+      < Route path="/verify-email/:verifyToken"  element={!authUser ? <EmailVerificationPage/> : <Navigate to={"/"} /> } />
     </Routes>
     <Toaster />
     </div>
