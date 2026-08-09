@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const UserSchema = mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
@@ -10,8 +10,8 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        min: [ 1 ],
-        max: [ 20 ]
+        min: [1],
+        max: [20]
     },
     password: {
         type: String,
@@ -21,7 +21,7 @@ const UserSchema = mongoose.Schema({
     },
     profilepic: {
         type: String,
-        default: ""
+        default: ''
     },
     lastLogin: {
         type: Date,
@@ -38,6 +38,6 @@ const UserSchema = mongoose.Schema({
     resetPasswordTokenExpired: Date,
 }, { timestamps: true });
 
-const User = mongoose.model("User",UserSchema);
+const User = mongoose.model('User', UserSchema);
 
-module.exports = User;
+export default User;

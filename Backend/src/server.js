@@ -1,8 +1,8 @@
-const express = require('express');
-const route = require('./routes/server');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const { app } = require('./lib/socket.io.js');
+import express from 'express';
+import route from './routes/server.js';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import { app } from './lib/socket.io.js';
 
 
 app.use(express.json());
@@ -12,4 +12,4 @@ app.use(cookieParser());
 app.use('/api/auth', route.Authroute);
 app.use('/api/message', route.Messageroute);
 
-module.exports = app;
+export default app;

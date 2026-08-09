@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
  async function hashingPassword(Password) {
    const hashedPassword = await bcrypt.hash(Password,10);
@@ -11,10 +11,10 @@ const generateToken = async (userId, res) => {
     res.cookie("token", token);
 }
 
-const comparePassword = async (Password,DbPassword) => {
-    const verified = await bcrypt.compare(Password,DbPassword);
+const comparePassword = async (Password, DbPassword) => {
+    const verified = await bcrypt.compare(Password, DbPassword);
     return verified;
 }
 
-module.exports = { hashingPassword, generateToken, comparePassword }
+export { hashingPassword, generateToken, comparePassword };
 

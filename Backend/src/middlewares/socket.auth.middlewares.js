@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const Model = require('../models/server.js');
+import jwt from 'jsonwebtoken';
+import Model from '../models/server.js';
 
 const getSocketToken = (socket) => {
   const authToken = socket.handshake.auth?.token;
@@ -53,6 +53,5 @@ const socketAuthMiddlewares = async (socket, next) => {
    }
 };
 
-module.exports={
-    socketAuthMiddlewares
-}
+export { socketAuthMiddlewares };
+export default { socketAuthMiddlewares };

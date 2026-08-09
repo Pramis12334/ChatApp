@@ -1,7 +1,10 @@
-const { Message } = require("./message.model");
-const User = require("./user.model");
+import { Message } from './message.model.js';
+import User from './user.model.js';
 
-module.exports = {
+const Model = {
     User,
     Message
-}
+};
+
+export { User, Message };
+export default Model;

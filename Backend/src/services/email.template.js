@@ -1,4 +1,4 @@
- function createWelcomeEmailTemplate(username, clientURL) {
+function createWelcomeEmailTemplate(username, clientURL) {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -549,8 +549,8 @@ function createVerificationEmailTemplate(username, verificationLink) {
   <a href="${verificationLink}">${verificationLink}</a> </p>`
 }
 
-module.exports = {
-    createWelcomeEmailTemplate,
-    createResetPasswordEmailTemplate,
-    createVerificationEmailTemplate
-}
+export {
+  createWelcomeEmailTemplate,
+  createResetPasswordEmailTemplate,
+  createVerificationEmailTemplate,
+};

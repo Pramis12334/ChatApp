@@ -1,5 +1,5 @@
-const { getReceiverSocketId, io } = require('../lib/socket.io.js');
-const Model = require('../models/server.js');
+import { getReceiverSocketId, io } from '../lib/socket.io.js';
+import Model from '../models/server.js';
 
 const getAllMessage = async (req, res) => {
    try {
@@ -90,7 +90,14 @@ try{
 }
 }
 
-module.exports = {
+export {
+    getAllMessage,
+    getAllContacts,
+    getMessageByUserId,
+    sendMessage
+};
+
+export default {
     getAllMessage,
     getAllContacts,
     getMessageByUserId,
