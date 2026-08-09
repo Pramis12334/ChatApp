@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer');
-const { createWelcomeEmailTemplate, createResetPasswordEmailTemplate, createVerificationEmailTemplate } = require('./email.template');
+import nodemailer from 'nodemailer';
+import { createWelcomeEmailTemplate, createResetPasswordEmailTemplate, createVerificationEmailTemplate } from './email.template.js';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -96,9 +96,9 @@ The ChatApp team`;
   const html = `${createVerificationEmailTemplate(username, verificationLink)}`;
   await sendEmail(userEmail,subject,text,html);
 };
-module.exports = { 
+export  { 
     sendSingupEmail,
     sendLoginEmail,
     sendResetPasswordEmail,
     sendVerificationEmail
-}
+};

@@ -1,3 +1,3 @@
-const { hashingPassword, generateToken, comparePassword } = require("./user.utils");
+import { hashingPassword, generateToken, comparePassword } from "./user.utils.js";
 
-module.exports = { hashingPassword, generateToken, comparePassword }
+export default { hashingPassword, generateToken, comparePassword };

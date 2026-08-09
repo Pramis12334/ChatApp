@@ -1,7 +1,7 @@
-const Authroute  = require("./auth.routes");
-const Messageroute = require("./message.routes");
+import Authroute  from "./auth.routes.js";
+import Messageroute from "./message.routes.js";
 
-module.exports={
+export default {
     Authroute,
-    Messageroute
-}
+    Messageroute,
+};

@@ -1,9 +1,8 @@
-
-const Model = require("../models/server.js");
-const cloudinary  = require("../services/cloudinary.js");
-const { sendSingupEmail, sendResetPasswordEmail, sendVerificationEmail } = require("../services/email.services.js");
-const userUtils = require("../utils/server.js");
-const crypto = require('crypto');
+import Model from '../models/server.js';
+import cloudinary from '../services/cloudinary.js';
+import { sendSingupEmail, sendResetPasswordEmail, sendVerificationEmail } from '../services/email.services.js';
+import userUtils from '../utils/server.js';
+import crypto from 'crypto';
 
 const registeruser = async (req, res) => {
     try{
@@ -211,12 +210,22 @@ const userVerification = async(req, res) => {
     return res.status(500).json({ message: "Internal Server Error"});
    }
 }
-module.exports = {
-registeruser,
-loginuser,
-logoutuser,
-updateProfile,
-userPasswordForgot,
-userPasswordChange,
-userVerification
-}
+export {
+    registeruser,
+    loginuser,
+    logoutuser,
+    updateProfile,
+    userPasswordForgot,
+    userPasswordChange,
+    userVerification
+};
+
+export default {
+    registeruser,
+    loginuser,
+    logoutuser,
+    updateProfile,
+    userPasswordForgot,
+    userPasswordChange,
+    userVerification
+};

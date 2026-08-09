@@ -1,9 +1,9 @@
-const express = require('express');
-const Controllers = require('../controllers/server');
+import express from 'express';
+import Controllers from '../controllers/server.js';
 const route = express.Router();
-const {AuthProtectRoute} = require('../middlewares/auth.middlewares');
-const upload = require('../services/multer-storage-cloudinary.js');
-const validationMessage = require('../middlewares/validation.message.middlewares.js');
+import {AuthProtectRoute} from '../middlewares/auth.middlewares.js';
+import upload from '../services/multer-storage-cloudinary.js';
+import validationMessage from '../middlewares/validation.message.middlewares.js';
 
 route.use(AuthProtectRoute);
 
@@ -13,4 +13,4 @@ route.get('/:id', Controllers.getMessageByUserId);
 route.post('/send/:id',validationMessage.sendMessageValidationResult, upload.single('image'),Controllers.sendMessage);
 
 
-module.exports = route;
+export default route;

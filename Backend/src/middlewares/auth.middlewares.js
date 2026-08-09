@@ -1,5 +1,5 @@
-const Model = require("../models/server.js");
-const jwt = require("jsonwebtoken");
+import Model from '../models/server.js';
+import jwt from 'jsonwebtoken';
 
 const AuthProtectRoute = async (req, res, next) => {
 try{
@@ -26,8 +26,5 @@ return res.status(500).json({ message: "Middlewares Error", error });
 
 }
 
-
-
-module.exports = {
-    AuthProtectRoute
-}
+export { AuthProtectRoute };
+export default { AuthProtectRoute };
