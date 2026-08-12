@@ -86,7 +86,7 @@ if(callerSocketId ) {
         const receiverSocketId = userSocketMap[receiverId];
 
         if(receiverSocketId) {
-            io.to(receiverSocketId).emit("webrtc_answer", {
+            io.to(receiverSocketId).emit("webrtc_ice_candidate", {
                 candidate,
                 senderId: socket.userId,
                 callId
