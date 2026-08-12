@@ -5,7 +5,7 @@ import useVideocallStore from '../store/useVideocallStore';
 
 const VideoCall = ({socket}) => {
   const { authUser}  = useAuthStore();
-  const { setIncomingCall, setCurrentCall, setCallType, setCallModelOpen, endCall, setCallStatus  } = useVideocallStore();
+  const { setIncomingCall, setCurrentCall, setCallType, setIsCallModelOpen, endCall, setCallStatus  } = useVideocallStore();
 
   useEffect(() => {
     if(!socket) {
@@ -21,7 +21,7 @@ const VideoCall = ({socket}) => {
       });
 
       setCallType(callType)
-      setCallModelOpen(true)
+      setIsCallModelOpen(true)
       setCallStatus("Ringing")
     }
 
@@ -39,7 +39,7 @@ const VideoCall = ({socket}) => {
        socket.off("incoming_call",handleIncomingCall);
        socket.off("end_call",handleEndCall);
     }
-  }, [setIncomingCall,setCurrentCall,setCallType,setCallModelOpen,setCallStatus,endCall, authUser, socket]);
+  }, [setIncomingCall,setCurrentCall,setCallType,setIsCallModelOpen,setCallStatus,endCall, authUser, socket]);
 
   const initiateCall = useCallback((receiverId,receiverName,receiverProfilePic, callType="video") =>{
     const callId = `${authUser?._id}-${receiverId}-${Date.now()}`;
@@ -53,7 +53,7 @@ const VideoCall = ({socket}) => {
 
     setCurrentCall(callData)
     setCallType(callType)
-    setCallModelOpen(true)
+    setIsCallModelOpen(true)
     setCallStatus("calling")
 
     socket.emit("initiate_call", {
@@ -65,7 +65,7 @@ const VideoCall = ({socket}) => {
         profilepic: authUser?.profilepic,
       }
     });
-  },[setCallModelOpen,setCurrentCall,setCallStatus,setCallType,authUser,socket])
+  },[setIsCallModelOpen,setCurrentCall,setCallStatus,setCallType,authUser,socket])
 
   useEffect(() => {
     useVideocallStore().getState().initiateCall = initiateCall
