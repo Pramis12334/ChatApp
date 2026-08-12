@@ -58,7 +58,6 @@ export const useChatStore = create((set,get) => ({
             set({ isMessagesLoading: false})
         }
     },
-
     sendMessage: async (messageData) => {
         const { selectedUser } = get();
         const { authUser } = useAuthStore.getState();
@@ -119,5 +118,5 @@ export const useChatStore = create((set,get) => ({
         if (!socket) return;
         socket.off("newMessage");
     },
-
+    
 }))

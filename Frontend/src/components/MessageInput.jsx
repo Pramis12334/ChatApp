@@ -31,7 +31,6 @@ function MessageInput() {
         setImageFile(null);
         if(fileInputRef.current) fileInputRef.current.value = "";
     };
-
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if(!file.type.startsWith("image/")) {
@@ -45,6 +44,9 @@ function MessageInput() {
         setImageFile(null);
         setImagePreview(null);
         if(fileInputRef.current) fileInputRef.current.value = "";
+    }
+    const isTyping = () => {
+        
     }
   return (
     <div className='p-4 border-t border-slate-700/50 '>

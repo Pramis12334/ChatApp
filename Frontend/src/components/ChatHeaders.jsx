@@ -1,7 +1,8 @@
 import React from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { useChatStore } from '../store/useChatStore';
-import { XIcon } from 'lucide-react';
+import { VideoIcon, XIcon } from 'lucide-react';
+import CallButton from './CallButton';
 
 function ChatHeaders() {
     const { selectedUser, setSelectedUser} = useChatStore();
@@ -24,6 +25,8 @@ function ChatHeaders() {
         </div>
        
       </div>
+      {/* video call button */}
+      < CallButton handleVideoCall={handleVideoCall} />
        {/*  close button*/}
         <button onClick={() => setSelectedUser(null)}>
            < XIcon className='w-5 h-5 cursor-pointer text-slate-400 hover:text-slate-200 transition-colors' />
