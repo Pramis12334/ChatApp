@@ -3,10 +3,26 @@ import { useAuthStore } from '../store/useAuthStore'
 import { useChatStore } from '../store/useChatStore';
 import { VideoIcon, XIcon } from 'lucide-react';
 import CallButton from './CallButton';
+import useVideocallStore from '../store/useVideocallStore';
 
 function ChatHeaders() {
     const { selectedUser, setSelectedUser} = useChatStore();
     const { onlineUsers }=useAuthStore()
+
+    const handleVideoCall = () => {
+      if(selectedUser && onlineUsers.includes(selectedUser._id)) {
+        const { initiateCall } = useVideocallStore.getState();
+
+        initiateCall(
+          selectedUser?._id,
+          selectedUser?.username,
+          selectedUser?.profilepic,
+          "video"
+        );
+      } else {
+        alert("User is offline. Please try again later.");
+      }
+    }
   return (
     <div className='flex justify-between items-center max-h-[84px] px-6 flex-1 bg-slate-800/50 border-b border-slate-700/50'>
       <div className='flex items-center space-x-3'>
