@@ -2,6 +2,7 @@ import http from 'http';
 import express from 'express';
 import { Server } from 'socket.io';
 import { socketAuthMiddlewares } from '../middlewares/socket.auth.middlewares.js';
+import { handleVideoCallEvent } from '../services/videocall.socket.js';
 
 const app = express();
 
@@ -27,6 +28,9 @@ io.on('connection', (socket) => {
     userSocketMap[userId] = socket.id;
 
     io.emit('getOnlineUsers', Object.keys(userSocketMap));
+
+    
+    handleVideoCallEvent(socket, io, userSocketMap);
 
     socket.on('disconnect', () => {
         console.log('A user disconnected', socket.user.username);
