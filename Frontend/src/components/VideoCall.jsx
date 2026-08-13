@@ -1,11 +1,39 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import useVideocallStore from '../store/useVideocallStore';
 
 
 const VideoCall = ({socket}) => {
   const { authUser}  = useAuthStore();
-  const { setIncomingCall, setCurrentCall, setCallType, setIsCallModelOpen, endCall, setCallStatus  } = useVideocallStore();
+  const {setIncomingCall,
+        setCurrentCall,
+        setCallType,
+        setIsCallModelOpen,
+        setIsCallActive,
+        setlocalStream,
+        setRemoteStream,
+        setPeerConnection,
+        addIceCandidateQueue,
+        processQuededIceCandidate,
+        toggleVideo,
+        toggleAudio,
+        clearIncomingCall,
+        endCall, 
+        setCallStatus,
+        currentCall,
+        incomingCall,
+        isCallActive,
+        callType,
+        localStream,
+        remoteStream,
+        isVideoEnabled,
+        isAudioEnabled,
+        peerConnection,
+        iceCandidatesQueue,
+        isCallModelOpen,
+        callStatus,  } = useVideocallStore();
+  const localVideoRef = useRef(null);
+  const remoteVideoRef = useRef(null);
 
   useEffect(() => {
     if(!socket) {
@@ -72,7 +100,6 @@ const VideoCall = ({socket}) => {
   }, [ initiateCall ])
   return (
     <div>
-      
     </div>
   )
 }
